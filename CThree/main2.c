@@ -1,6 +1,114 @@
 #define  _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+
+void write_file()
+{
+	FILE *fp = NULL;
+	fp = fopen("C:\\Users\\vons0\\Desktop\\3.txt", "w");
+	if (fp == NULL)
+	{
+		perror("open");
+		return -1;
+	}
+
+	char ch = 'a';
+	while (ch < 'z')
+	{
+		fputc(ch, fp);
+		ch++;
+	}
+
+	fclose(fp);
+}
+
+void read_file()
+{
+	FILE *fp = NULL;
+	fp = fopen("C:\\Users\\vons0\\Desktop\\3.txt", "r");
+	if (fp == NULL)
+	{
+		perror("open");
+		return -1;
+	}
+
+	//读到文件末尾返回-1
+	//int a=fgetc(fp);
+	//如果是文本文件 EOF 结束符 
+	/*while (a!=EOF)
+	{
+		fputc(a, stdout);
+		a = fgetc(fp);
+	}
+*/
+	//while (1)
+	//{
+	//	if (feof(fp))
+	//	{
+	//		break;
+	//	}
+	//	fputc(a, stdout);
+	//	a = fgetc(fp);
+	//}
+
+	char ch= fgetc(fp);
+	//feof()判断是否是文件结尾 是返回true
+	while (!feof(fp))
+	{
+		fputc(ch, stdout);
+		ch = fgetc(fp);
+	}
+
+
+	fclose(fp);
+}
+
+int main10()
+{
+	//write_file();
+	read_file();
+	return 0;
+}
+
+int main9()
+{
+	FILE *fp=NULL;
+	// r -> 如果文件不存在,打开失败
+	//w ->如果文件不存在,则创建,存在则清空里面的内容再打开
+	//a ->如果文件不存在就创建,如果存在光标自动移动到文件末尾
+	//a+ w+ r+表示可读可写
+	fp = fopen("C:\\Users\\vons0\\Desktop\\2.txt", "a");
+	if (fp == NULL) {
+		perror("open");
+		printf("%s", "失败");
+		return -1;
+	}
+	printf("%s", "success");
+
+	//fputc(),一次只能写一个字符
+	fputc('a', fp);
+	fputc('b', fp);
+	fputc('c', fp);
+
+	fclose(fp);//关闭文件
+	fp = NULL;
+	return 0;
+}
+
+
+int main8()
+{
+	printf("%s\n", "before");
+	close(1);
+	int fd = open("C:\\Users\\vons0\\Desktop\\1.txt",O_WRONLY,0777);
+	printf("%s\n", "after");
+	printf("%d\n", fd);
+	return 0;
+}
 
 //第一个成员如果没有赋值,默认为0,下一个成员一次递增1
 enum MyColor
@@ -32,7 +140,7 @@ struct Teacher
 
 //ps:sizeof()是计算类型在内存中所占的字节数
   //:strlen() 只是计算字符串的长度,要计算字节数还的乘以每个字符的字节大小
-int main()
+int main7()
 {
 	
 	printf("Book sizeof=%d\n", sizeof(union Book));//输出8-> 是最大成员Int类型的大小
